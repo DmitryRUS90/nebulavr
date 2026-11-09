@@ -1,0 +1,204 @@
+/* Scene 06, Energy core. Spacing, radii and type come from tokens.css. */
+
+.core-ui {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-200);
+}
+
+/* the title stays at the top, everything else sits in the space that is left */
+.core-main {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: flex-end; /* cards and the HUD sit low so the reactor above them stays in view */
+  justify-content: center;
+}
+
+/* intro, won and lost cards */
+.core-card {
+  width: 100%;
+  max-width: 480px;
+  display: grid;
+  gap: var(--s-200);
+}
+.core-lede {
+  color: var(--muted);
+}
+.core-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-75) var(--s-300);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--faint);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.core-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-100);
+}
+.core-card.is-won .eyebrow {
+  color: var(--ok);
+}
+.core-card.is-lost .eyebrow,
+.core-reason {
+  color: var(--warn);
+}
+.core-result {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-200);
+  margin: 0;
+}
+.core-result dt {
+  color: var(--faint);
+}
+.core-result dd {
+  margin: 0;
+}
+
+/* countdown number, centred over the whole area */
+.core-count {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  font-size: clamp(6rem, 20vw, 12rem);
+  line-height: 1;
+  pointer-events: none;
+  animation: core-count 0.9s var(--ease) both;
+}
+@keyframes core-count {
+  from {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .core-count {
+    animation: none;
+  }
+}
+
+/* HUD while the round runs */
+.core-hud {
+  width: 100%;
+  max-width: 760px;
+  display: grid;
+  gap: var(--s-200);
+}
+.core-stats {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s-300);
+  align-items: end;
+}
+.core-stat {
+  display: grid;
+  gap: var(--s-75);
+  margin: 0;
+}
+.core-stat-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-100);
+}
+.core-label {
+  color: var(--faint);
+}
+.core-time {
+  margin: 0;
+  font-weight: inherit;
+}
+/* the HUD meters follow the game every frame, so they should not trail behind it */
+.core-hud .meter > span {
+  transition-duration: 120ms;
+}
+
+.core-flows {
+  display: grid;
+  gap: var(--s-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.core-flow {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) 88px;
+  align-items: center;
+  gap: var(--s-200);
+}
+.core-flow-name {
+  display: flex;
+  align-items: center;
+  gap: var(--s-75);
+}
+.core-flow-dot {
+  flex: none;
+  width: var(--s-75);
+  height: var(--s-75);
+  border-radius: var(--r-full);
+  background: var(--flow);
+  box-shadow: 0 0 12px var(--flow);
+}
+.core-flow-track {
+  position: relative;
+  height: var(--s-200);
+  border-radius: var(--r-full);
+  background: rgb(160 190 255 / 0.1);
+  overflow: hidden;
+}
+.core-flow-band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 35%;
+  width: 30%;
+  border-radius: var(--r-full);
+  background: var(--flow);
+  opacity: 0.3;
+}
+.core-flow-level {
+  position: absolute;
+  top: var(--s-25);
+  bottom: var(--s-25);
+  left: 50%;
+  width: var(--s-50);
+  margin-left: calc(var(--s-25) * -1);
+  border-radius: var(--r-full);
+  background: var(--text);
+}
+.core-flow.is-off .core-flow-level {
+  background: var(--warn);
+}
+.core-flow-state {
+  text-align: right;
+  color: var(--ok);
+}
+.core-flow.is-off .core-flow-state {
+  color: var(--warn);
+}
+
+@media (max-width: 599px) {
+  .core-stats {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .core-stat-time {
+    grid-column: 1 / -1;
+  }
+  .core-flow {
+    grid-template-columns: 72px minmax(0, 1fr) 64px;
+    gap: var(--s-100);
+  }
+}
